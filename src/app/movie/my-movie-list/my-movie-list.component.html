@@ -1,0 +1,70 @@
+<form [formGroup]="myMovieForm" (ngSubmit)="add()">
+  <div class="form-group">
+    <label for="search">Search</label>
+    <app-movie-search-control id="search" formControlName="movie"></app-movie-search-control>
+    @if (showError('movie')) {
+      <span class="error">
+        @if (myMovieForm.get('movie')?.hasError('required')) {
+          Entering a title is required
+        } @else {
+          You already added that movie, edit it instead
+        }
+      </span>
+    }
+  </div>
+  <div class="form-group">
+    <label for="comment">Comment</label>
+    <textarea rows="5" id="comment" formControlName="comment"></textarea>
+    <ng-template [ngTemplateOutlet]="commentError"
+                 [ngTemplateOutletContext]="{
+                  $implicit: {
+                    showError: showError('comment'),
+                    ctrl: myMovieForm.get('comment')
+                  }
+                }"></ng-template>
+</div>
+<div class="button-group">
+  <button class="btn" type="button" (click)="reset()">Reset</button>
+  <button class="btn primary-button" type="submit">Save</button>
+</div>
+</form>
+<h2>My Movies</h2>
+<div class="my-movies-list" [formGroup]="favoritesForm">
+  <ng-container formArrayName="favorites">
+    @for (movieCtrl of favorites.controls; track movieCtrl; let i = $index) {
+      <div class="movie-item"
+        [formGroup]="$any(movieCtrl)">
+        <span class="movie-title">{{ movieCtrl.get('title')?.value }}</span>
+        <div class="form-group">
+          <textarea formControlName="comment"
+          class="movie-comment"></textarea>
+          <ng-template [ngTemplateOutlet]="commentError"
+                     [ngTemplateOutletContext]="{
+                      $implicit: {
+                          showError: !movieCtrl.get('comment')?.valid,
+                          ctrl: movieCtrl.get('comment')
+                        }
+                      }">
+        </ng-template>
+      </div>
+      <button class="btn btn__icon" (click)="removeMovie(i)">
+        <fast-svg name="delete"></fast-svg>
+        Delete
+      </button>
+    </div>
+  }
+</ng-container>
+</div>
+
+<ng-template #commentError let-input>
+  @if (input.showError) {
+    <span class="error">
+      @if ($any(input.ctrl).hasError('required')) {
+        Entering a comment is required
+      } @else {
+        Please enter the minimum amount of {{ $any(input.ctrl).errors.minlength?.requiredLength }}, right now
+        you've entered {{ $any(input.ctrl).errors.minlength?.actualLength }}
+      }
+    </span>
+  }
+</ng-template>
