@@ -64,7 +64,7 @@ Now we can create a `movies` resource that will be used to load the movies.
 
 ```ts
 // src/app/movie/movie-search-page/movie-search-page.component.ts
-import { resource } from 'ngxtension/resource';
+import { rxResource } from '@angular/core/rxjs-interop';
 
 @Component()
 export class MovieSearchPageComponent {
