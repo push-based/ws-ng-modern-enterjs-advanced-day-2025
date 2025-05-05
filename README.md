@@ -39,6 +39,9 @@ npm run start
 inject
 * [inject - Automatic migration](exercises/inject%20-%20automatic-migration.md)
 
+New Control Flow
+* [New Control Flow](exercises/new-control-flow.md)
+
 Signals
 * [Signal - Introduction](exercises/signal-introduction.md)
 * [Signal - Computed](exercises/signal-computed.md)

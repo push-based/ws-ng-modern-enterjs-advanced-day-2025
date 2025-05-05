@@ -123,7 +123,7 @@ import { MovieListComponent } from '../movie-list/movie-list.component';
         <h2>Movies</h2>
       </header>
       @if (recommendations$ | async; as movies) {
-        <movie-list [movies]="movies!" />
+        <movie-list [movies]="movies" />
       } @else {
         <div class="loader"></div>
       }

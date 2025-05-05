@@ -1,4 +1,4 @@
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, switchMap } from 'rxjs';
@@ -10,13 +10,15 @@ import { MovieListComponent } from '../movie-list/movie-list.component';
 @Component({
   selector: 'movie-search-page',
   template: `
-    @if (movies$ | async; as movies) {
-      <movie-list [movies]="movies" />
-    } @else {
+    <movie-list
+      *ngIf="movies$ | async as movies; else loader"
+      [movies]="movies"
+    />
+    <ng-template #loader>
       <div class="loader"></div>
-    }
+    </ng-template>
   `,
-  imports: [MovieListComponent, AsyncPipe],
+  imports: [MovieListComponent, AsyncPipe, NgIf],
 })
 export class MovieSearchPageComponent {
   constructor(

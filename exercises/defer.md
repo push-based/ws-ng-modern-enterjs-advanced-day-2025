@@ -33,7 +33,7 @@ Use the defer block to lazy load the component.
 
 ```angular17html
 @defer {
-  <movie-list [movies]="recommendations.results" />
+  <movie-list [movies]="movies" />
 }
 ```
 
@@ -51,3 +51,18 @@ Identify which bundles where affected by this change.
 ![defer-main-bundle-with-defer.png](images/defer-main-bundle-with-defer.png)
 
 </details>
+
+## BONUS: Use on viewport trigger
+
+Open the app on mobile mode and check the network tab.
+Scroll until the component shows and see that a new entry will show up in the network tab.
+That will be our movie-list component bundle.
+
+```angular17html
+@defer (on viewport) {
+  <movie-list [movies]="movies" />
+} @placeholder {
+  <div></div>
+}
+```
+
