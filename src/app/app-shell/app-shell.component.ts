@@ -1,5 +1,5 @@
-import { AsyncPipe } from '@angular/common';
 import { Component, effect, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { FastSvgComponent } from '@push-based/ngx-fast-svg';
@@ -26,7 +26,6 @@ import { SideDrawerComponent } from '../ui/component/side-drawer/side-drawer.com
     ReactiveFormsModule,
     FormsModule,
     DarkModeToggleComponent,
-    AsyncPipe,
   ],
 })
 export class AppShellComponent {
@@ -36,6 +35,7 @@ export class AppShellComponent {
   private trackingService = inject(TrackingService);
 
   genres$ = this.movieService.getGenres();
+  genres = toSignal(this.genres$, { initialValue: [] });
 
   sideDrawerOpen = signal(false);
 
