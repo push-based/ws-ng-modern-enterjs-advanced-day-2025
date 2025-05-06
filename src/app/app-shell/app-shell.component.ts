@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { FastSvgComponent } from '@push-based/ngx-fast-svg';
@@ -39,13 +39,14 @@ export class AppShellComponent {
 
   sideDrawerOpen = signal(false);
 
-  private _searchValue = '';
-  set searchValue(value: string) {
-    this._searchValue = value;
-    this.router.navigate(['search', value]);
-  }
-  get searchValue(): string {
-    return this._searchValue;
+  _searchValue = signal('');
+
+  constructor() {
+    effect(() => {
+      if (this._searchValue()) {
+        this.router.navigate(['search', this._searchValue()]);
+      }
+    });
   }
 
   toggleSideDrawer() {
