@@ -39,13 +39,15 @@ npm run start
 inject
 * [inject - Automatic migration](exercises/inject%20-%20automatic-migration.md)
 
-New Control Flow
-* [New Control Flow](exercises/new-control-flow.md)
-
 Signals
 * [Signal - Introduction](exercises/signal-introduction.md)
 * [Signal - Computed](exercises/signal-computed.md)
 * [Signal - Effect](exercises/signal-effect.md)
+
+More Signals
+* [Signal - toSignal](exercises/signal-toSignal.md)
+* [Signal - resource  & injectParams](exercises/signal-resource-injectParams.md)
+* [Signal - Automatic Migration](exercises/signal-migration.md)
 
 Change Detection
 * [Change Detection: Dirty Check](./exercises/change-detection%20-%20Dirty%20Check.md)
@@ -54,10 +56,9 @@ Change Detection
 * [Change Detection: signals](./exercises/change-detection%20-%20signals.md)
 * [Change Detection: zoneless](./exercises/change-detection%20-%20zoneless.md)
 
-More Signals
-* [Signal - toSignal](exercises/signal-toSignal.md)
-* [Signal - resource  & injectParams](exercises/signal-resource-injectParams.md)
-* [Signal - Automatic Migration](exercises/signal-migration.md)
+
+New Control Flow
+* [New Control Flow](exercises/new-control-flow.md)
 
 Defer
 * [Defer](./exercises/defer.md)
