@@ -4,6 +4,8 @@ import {
   Component,
   computed,
   input,
+  linkedSignal,
+  model,
 } from '@angular/core';
 
 const range = 10;
@@ -17,8 +19,9 @@ const numStars = 5;
     </span>
     <div class="stars">
       <span
-        *ngFor="let fill of stars()"
+        *ngFor="let fill of _stars(); let i = index"
         class="star"
+        (mousedown)="updateStars($event, i + 1)"
         [ngClass]="{
           'star-half': fill === 0,
           'star-empty': fill === -1,
@@ -51,9 +54,24 @@ export class StarRatingComponent {
       .concat(new Array(empty).fill(-1));
   });
 
-  rating = input(5);
+  _stars = linkedSignal(this.stars);
+
+  rating = model(5);
   showRating = input(false);
   tooltipText = computed(() => {
     return `${this.rating()} average rating`;
   });
+
+  updateStars(event: MouseEvent, stars: number) {
+    /*this.rating.set(stars);
+    event.preventDefault();
+    event.stopPropagation();*/
+    this._stars.update((currentStars) => {
+      const starAmount = currentStars.length;
+
+      return new Array(stars)
+        .fill(1)
+        .concat(new Array(starAmount - stars).fill(-1));
+    });
+  }
 }
