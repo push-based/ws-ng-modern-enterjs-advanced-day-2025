@@ -22,12 +22,12 @@ export class MovieSearchPageComponent {
   private movieService = inject(MovieService);
   private activatedRoute = inject(ActivatedRoute);
 
-  // 👇 add the `movies` field and convert the `movies$` observable to a signal
-  movies = toSignal(this.movies$, { initialValue: [] });
-  
   private movies$: Observable<TMDBMovieModel[]> = this.activatedRoute.params.pipe(
     switchMap((params) => this.movieService.searchMovies(params['query'])),
   );
+
+  // 👇 add the `movies` field and convert the `movies$` observable to a signal
+  movies = toSignal(this.movies$, { initialValue: [] });
 }
 
 ```
