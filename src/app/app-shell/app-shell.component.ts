@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { FastSvgComponent } from '@push-based/ngx-fast-svg';
@@ -30,16 +30,14 @@ import { SideDrawerComponent } from '../ui/component/side-drawer/side-drawer.com
   ],
 })
 export class AppShellComponent {
-  constructor(
-    protected authService: AuthService,
-    private movieService: MovieService,
-    private router: Router,
-    private trackingService: TrackingService,
-  ) {}
+  protected authService = inject(AuthService);
+  private movieService = inject(MovieService);
+  private router = inject(Router);
+  private trackingService = inject(TrackingService);
 
   genres$ = this.movieService.getGenres();
 
-  sideDrawerOpen = false;
+  sideDrawerOpen = signal(false);
 
   private _searchValue = '';
   set searchValue(value: string) {
@@ -51,7 +49,7 @@ export class AppShellComponent {
   }
 
   toggleSideDrawer() {
-    this.sideDrawerOpen = !this.sideDrawerOpen;
+    this.sideDrawerOpen.update((open) => !open);
   }
 
   trackNavigation(route: string) {
