@@ -1,19 +1,18 @@
 import { AsyncPipe, NgIf } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { ActivatedRoute } from '@angular/router';
-import { Observable, switchMap } from 'rxjs';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { injectParams } from 'ngxtension/inject-params';
 
-import { TMDBMovieModel } from '../../shared/model/movie.model';
 import { MovieService } from '../movie.service';
 import { MovieListComponent } from '../movie-list/movie-list.component';
 
 @Component({
   selector: 'movie-search-page',
   template: `
-    @if (movies().length) {
-      <movie-list [movies]="movies()" />
-    } @else {
+    @if (movieResource.hasValue()) {
+      <movie-list [movies]="movieResource.value()" />
+    }
+    @if (movieResource.isLoading()) {
       <div class="loader"></div>
     }
   `,
@@ -21,11 +20,13 @@ import { MovieListComponent } from '../movie-list/movie-list.component';
 })
 export class MovieSearchPageComponent {
   private movieService = inject(MovieService);
-  private activatedRoute = inject(ActivatedRoute);
 
-  movies$: Observable<TMDBMovieModel[]> = this.activatedRoute.params.pipe(
-    switchMap((params) => this.movieService.searchMovies(params['query'])),
-  );
+  idParam = injectParams<string>((params) => params.query);
 
-  movies = toSignal(this.movies$, { initialValue: [] });
+  movieResource = rxResource({
+    request: this.idParam,
+    loader: (id) => {
+      return this.movieService.searchMovies(id.request);
+    },
+  });
 }
