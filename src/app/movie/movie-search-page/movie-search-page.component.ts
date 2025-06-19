@@ -1,4 +1,3 @@
-import { AsyncPipe, NgIf } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { injectParams } from 'ngxtension/inject-params';
@@ -12,11 +11,14 @@ import { MovieListComponent } from '../movie-list/movie-list.component';
     @if (movieResource.hasValue()) {
       <movie-list [movies]="movieResource.value()" />
     }
+    @if (movieResource.error()) {
+      {{ movieResource.error() }}
+    }
     @if (movieResource.isLoading()) {
       <div class="loader"></div>
     }
   `,
-  imports: [MovieListComponent, AsyncPipe, NgIf],
+  imports: [MovieListComponent],
 })
 export class MovieSearchPageComponent {
   private movieService = inject(MovieService);
