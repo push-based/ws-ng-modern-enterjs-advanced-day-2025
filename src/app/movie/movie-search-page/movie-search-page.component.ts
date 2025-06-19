@@ -11,7 +11,7 @@ import { MovieListComponent } from '../movie-list/movie-list.component';
 @Component({
   selector: 'movie-search-page',
   template: `
-    @if (movies()) {
+    @if (movies().length) {
       <movie-list [movies]="movies()" />
     } @else {
       <div class="loader"></div>
