@@ -89,7 +89,7 @@
 
     <h3 class="navigation--headline">Genres</h3>
 
-    @for (genre of genres$ | async; track genre) {
+    @for (genre of genres(); track genre) {
       <a
         class="navigation--link"
         (click)="trackNavigation('list/genre-' + genre.id)"

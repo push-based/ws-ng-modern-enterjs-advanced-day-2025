@@ -28,7 +28,7 @@ const numStars = 5;
         ★
       </span>
     </div>
-    <div class="rating-value" *ngIf="showRating">{{ rating }}</div>
+    <div class="rating-value" *ngIf="showRating">{{ rating() }}</div>
   `,
   styleUrls: [
     'star-rating.component.scss',
