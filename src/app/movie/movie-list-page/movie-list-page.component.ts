@@ -11,7 +11,6 @@ import { MovieListComponent } from '../movie-list/movie-list.component';
 @Component({
   selector: 'movie-list-page',
   template: `
-    <dirty-check />
     <movie-list
       [movies]="movies"
       [favoriteMovieIds]="favoriteMovieIds"

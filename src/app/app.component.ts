@@ -12,6 +12,7 @@ import { DirtyCheckComponent } from './shared/dirty-check.component';
       <router-outlet />
     </app-shell>
   `,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterOutlet, AppShellComponent, DirtyCheckComponent],
 })
 export class AppComponent {}

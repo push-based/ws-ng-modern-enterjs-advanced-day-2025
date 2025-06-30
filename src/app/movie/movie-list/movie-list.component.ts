@@ -1,14 +1,22 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { NgForOf, NgIf } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FastSvgComponent } from '@push-based/ngx-fast-svg';
 
+import { DirtyCheckComponent } from '../../shared/dirty-check.component';
 import { TMDBMovieModel } from '../../shared/model/movie.model';
 import { MovieCardComponent } from '../movie-card/movie-card.component';
-import { NgForOf, NgIf } from '@angular/common';
 
 @Component({
   selector: 'movie-list',
   template: `
+    <dirty-check />
     <ng-container *ngIf="movies.length > 0; else empty">
       <movie-card
         *ngFor="let movie of movies; trackBy: trackByMovieId; let i = index"
@@ -28,6 +36,7 @@ import { NgForOf, NgIf } from '@angular/common';
       </div>
     </ng-template>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: `
     :host {
       display: grid;
@@ -38,7 +47,14 @@ import { NgForOf, NgIf } from '@angular/common';
       position: relative;
     }
   `,
-  imports: [MovieCardComponent, RouterLink, FastSvgComponent, NgIf, NgForOf],
+  imports: [
+    MovieCardComponent,
+    RouterLink,
+    FastSvgComponent,
+    NgIf,
+    NgForOf,
+    DirtyCheckComponent,
+  ],
 })
 export class MovieListComponent {
   @Input({ required: true }) movies!: TMDBMovieModel[];
