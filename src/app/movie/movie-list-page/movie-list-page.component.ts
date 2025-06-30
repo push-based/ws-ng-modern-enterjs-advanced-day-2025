@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { exhaustMap, Observable, scan, startWith, Subject, take } from 'rxjs';
 
 import { ElementVisibilityDirective } from '../../shared/cdk/element-visibility/element-visibility.directive';
+import { DirtyCheckComponent } from '../../shared/dirty-check.component';
 import { TMDBMovieModel } from '../../shared/model/movie.model';
 import { MovieService } from '../movie.service';
 import { MovieListComponent } from '../movie-list/movie-list.component';
@@ -11,37 +12,41 @@ import { MovieListComponent } from '../movie-list/movie-list.component';
   selector: 'movie-list-page',
   template: `
     <movie-list
-      [movies]="movies"
+      [movies]="movies()"
       [favoriteMovieIds]="favoriteMovieIds"
       (favoriteToggled)="handleFavoriteToggled($event)"
     />
     <div (elementVisible)="paginate$.next()"></div>
   `,
-  imports: [MovieListComponent, ElementVisibilityDirective],
+  imports: [
+    MovieListComponent,
+    ElementVisibilityDirective,
+    DirtyCheckComponent,
+  ],
 })
 export class MovieListPageComponent {
+  private movieService = inject(MovieService);
+  private activatedRoute = inject(ActivatedRoute);
+
   paginate$ = new Subject<void>();
 
-  movies: TMDBMovieModel[] = [];
+  movies = signal<TMDBMovieModel[]>([]);
 
   favoriteMovieIds = new Set<string>();
 
-  constructor(
-    private movieService: MovieService,
-    private activatedRoute: ActivatedRoute,
-  ) {
+  constructor() {
     this.activatedRoute.params.subscribe((params) => {
       if (params.category) {
         this.paginate((page) =>
           this.movieService.getMovieList(params.category, page),
         ).subscribe((movies) => {
-          this.movies = movies;
+          this.movies.set(movies);
         });
       } else {
         this.paginate((page) =>
           this.movieService.getMoviesByGenre(params.id, page),
         ).subscribe((movies) => {
-          this.movies = movies;
+          this.movies.set(movies);
         });
       }
     });

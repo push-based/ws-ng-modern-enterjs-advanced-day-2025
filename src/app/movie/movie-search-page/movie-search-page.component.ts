@@ -1,32 +1,41 @@
-import { AsyncPipe, NgIf } from '@angular/common';
-import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Observable, switchMap } from 'rxjs';
+import { Component, inject } from '@angular/core';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { injectParams } from 'ngxtension/inject-params';
 
-import { TMDBMovieModel } from '../../shared/model/movie.model';
 import { MovieService } from '../movie.service';
 import { MovieListComponent } from '../movie-list/movie-list.component';
 
 @Component({
   selector: 'movie-search-page',
   template: `
-    <movie-list
-      *ngIf="movies$ | async as movies; else loader"
-      [movies]="movies"
-    />
-    <ng-template #loader>
+    @if (movieResource.hasValue()) {
+      <movie-list [movies]="movieResource.value()!" />
+    }
+
+    @if (movieResource.isLoading()) {
       <div class="loader"></div>
-    </ng-template>
+    }
+
+    @if (movieResource.error()) {
+      <div class="error">
+        There are no movies to show.
+        {{ movieResource.error() }}
+      </div>
+    }
   `,
-  imports: [MovieListComponent, AsyncPipe, NgIf],
+  imports: [MovieListComponent],
 })
 export class MovieSearchPageComponent {
-  constructor(
-    private movieService: MovieService,
-    private activatedRoute: ActivatedRoute,
-  ) {}
+  private movieService = inject(MovieService);
 
-  movies$: Observable<TMDBMovieModel[]> = this.activatedRoute.params.pipe(
-    switchMap((params) => this.movieService.searchMovies(params['query'])),
-  );
+  searchQuery = injectParams('query');
+
+  movieResource = rxResource({
+    // request -> params in version 20
+    request: this.searchQuery,
+    loader: (params) => {
+      const searchQuery = params.request;
+      return this.movieService.searchMovies(searchQuery!);
+    },
+  });
 }

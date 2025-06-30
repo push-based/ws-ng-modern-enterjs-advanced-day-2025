@@ -1,13 +1,16 @@
 import { UpperCasePipe } from '@angular/common';
 import {
+  ChangeDetectionStrategy,
   Component,
   ElementRef,
   EventEmitter,
+  inject,
   Input,
   Output,
 } from '@angular/core';
 import { fromEvent } from 'rxjs';
 
+import { DirtyCheckComponent } from '../../shared/dirty-check.component';
 import { TMDBMovieModel } from '../../shared/model/movie.model';
 import { TiltDirective } from '../../shared/tilt.directive';
 import { StarRatingComponent } from '../../ui/pattern/star-rating/star-rating.component';
@@ -17,6 +20,7 @@ import { MovieImagePipe } from '../movie-image.pipe';
   selector: 'movie-card',
   template: `
     <div class="movie-card">
+      <dirty-check />
       <img
         tilt
         [tiltDegree]="5"
@@ -42,6 +46,7 @@ import { MovieImagePipe } from '../movie-image.pipe';
       </button>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: `
     .movie-card {
       transition: box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1) 0s;
@@ -77,9 +82,17 @@ import { MovieImagePipe } from '../movie-image.pipe';
       font-size: 2rem;
     }
   `,
-  imports: [TiltDirective, StarRatingComponent, UpperCasePipe, MovieImagePipe],
+  imports: [
+    TiltDirective,
+    StarRatingComponent,
+    UpperCasePipe,
+    MovieImagePipe,
+    DirtyCheckComponent,
+  ],
 })
 export class MovieCardComponent {
+  elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
+
   @Input({ required: true }) movie!: TMDBMovieModel;
   @Input({ required: true }) index!: number;
   @Input() favorite = false;
@@ -87,7 +100,7 @@ export class MovieCardComponent {
 
   @Output() favoriteChange = new EventEmitter<boolean>();
 
-  constructor(public elementRef: ElementRef<HTMLElement>) {
+  constructor() {
     fromEvent(this.elementRef.nativeElement, 'mouseenter').subscribe(() => {
       this.elementRef.nativeElement.classList.add('movie-card--hover');
     });

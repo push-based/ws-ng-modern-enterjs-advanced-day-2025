@@ -3,7 +3,10 @@ import {
   provideHttpClient,
   withInterceptorsFromDi,
 } from '@angular/common/http';
-import { ApplicationConfig } from '@angular/core';
+import {
+  ApplicationConfig,
+  provideExperimentalZonelessChangeDetection,
+} from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideFastSVG } from '@push-based/ngx-fast-svg';
 
@@ -23,6 +26,7 @@ export const appConfig: ApplicationConfig = {
       useClass: ReadAccessInterceptor,
       multi: true,
     },
+    provideExperimentalZonelessChangeDetection(),
     // provideClientHydration(withEventReplay()),
   ],
 };
