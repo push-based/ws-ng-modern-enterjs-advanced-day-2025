@@ -10,9 +10,9 @@
 **Clone and install**
 
 ```bash
-git clone https://github.com/push-based/ws-ng-modern-ngrome-2025.git
+git clone https://github.com/push-based/ws-ng-modern-enterjs-advanced-day-2025.git
 
-cd ws-ng-modern-ngrome-2025
+cd ws-ng-modern-enterjs-advanced-day-2025
 npm install
 
 # (optional) if the step before didn't work, please try the following
@@ -27,8 +27,8 @@ npm run start
 
 ## Workshop Information
 
-* [Workshop General Information](https://docs.google.com/document/d/1Y1E_HioWhMbC07KGpAbKovD8kcX8mXQLeCB9hcPzlF4/edit?usp=drive_link)
-* [Slides](https://drive.google.com/drive/folders/1FY8O33FkBIq7g9BQDFrpgwiE3g51enhz?usp=drive_link)
+* [Workshop General Information](https://docs.google.com/document/d/1WYHZw9d8xGxHIcQ9WgP7htt3JNikswjV2vZ3u1ys4jM/edit?usp=sharing)
+* [Slides](https://drive.google.com/drive/folders/1_54OO4uPyvjlxFIIvv6FWurCt2ab99PR?usp=sharing)
 
 ## Exercises
 
