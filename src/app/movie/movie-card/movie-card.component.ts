@@ -1,7 +1,15 @@
 import { UpperCasePipe } from '@angular/common';
-import { Component, ElementRef, EventEmitter, Input, Output, inject } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  inject,
+  Input,
+  Output,
+} from '@angular/core';
 import { fromEvent } from 'rxjs';
 
+import { DirtyCheckComponent } from '../../shared/dirty-check.component';
 import { TMDBMovieModel } from '../../shared/model/movie.model';
 import { TiltDirective } from '../../shared/tilt.directive';
 import { StarRatingComponent } from '../../ui/pattern/star-rating/star-rating.component';
@@ -11,6 +19,7 @@ import { MovieImagePipe } from '../movie-image.pipe';
   selector: 'movie-card',
   template: `
     <div class="movie-card">
+      <dirty-check />
       <img
         tilt
         [tiltDegree]="5"
@@ -71,7 +80,13 @@ import { MovieImagePipe } from '../movie-image.pipe';
       font-size: 2rem;
     }
   `,
-  imports: [TiltDirective, StarRatingComponent, UpperCasePipe, MovieImagePipe],
+  imports: [
+    TiltDirective,
+    StarRatingComponent,
+    UpperCasePipe,
+    MovieImagePipe,
+    DirtyCheckComponent,
+  ],
 })
 export class MovieCardComponent {
   elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
