@@ -1,5 +1,6 @@
 import { UpperCasePipe } from '@angular/common';
 import {
+  ChangeDetectionStrategy,
   Component,
   ElementRef,
   EventEmitter,
@@ -45,6 +46,7 @@ import { MovieImagePipe } from '../movie-image.pipe';
       </button>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: `
     .movie-card {
       transition: box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1) 0s;
