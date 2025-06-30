@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { exhaustMap, Observable, scan, startWith, Subject, take } from 'rxjs';
 
@@ -12,7 +12,7 @@ import { MovieListComponent } from '../movie-list/movie-list.component';
   selector: 'movie-list-page',
   template: `
     <movie-list
-      [movies]="movies"
+      [movies]="movies()"
       [favoriteMovieIds]="favoriteMovieIds"
       (favoriteToggled)="handleFavoriteToggled($event)"
     />
@@ -30,7 +30,7 @@ export class MovieListPageComponent {
 
   paginate$ = new Subject<void>();
 
-  movies: TMDBMovieModel[] = [];
+  movies = signal<TMDBMovieModel[]>([]);
 
   favoriteMovieIds = new Set<string>();
 
@@ -40,13 +40,13 @@ export class MovieListPageComponent {
         this.paginate((page) =>
           this.movieService.getMovieList(params.category, page),
         ).subscribe((movies) => {
-          this.movies = movies;
+          this.movies.set(movies);
         });
       } else {
         this.paginate((page) =>
           this.movieService.getMoviesByGenre(params.id, page),
         ).subscribe((movies) => {
-          this.movies = movies;
+          this.movies.set(movies);
         });
       }
     });
