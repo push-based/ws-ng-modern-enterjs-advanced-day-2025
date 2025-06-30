@@ -147,8 +147,8 @@
       (click)="toggleSideDrawer()"
     ></ui-hamburger-button>
     <div class="ui-toolbar--widget-container">
-      <ui-search-bar [ngModel]="_searchValue()" (ngModelChange)="searchValue = $event"></ui-search-bar>
-      <ui-dark-mode-toggle></ui-dark-mode-toggle>
+      <ui-search-bar [(ngModel)]="searchValue" />
+      <ui-dark-mode-toggle />
       <button
         type="button"
         style="
